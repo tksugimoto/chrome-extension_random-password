@@ -1,6 +1,6 @@
 (function () {
 	"use strict";
-	var randomStringInput = document.getElementById("random-string");
+	const randomStringInput = document.getElementById("random-string");
 	randomStringInput.value = create(30);
 
 
@@ -8,15 +8,15 @@
 	randomStringInput.select();
 
 	function create(len) {
-		var nums = "0123456789";
-		var chars_uc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		var chars_lc = "abcdefghijklmnopqrstuvwxyz";
+		const nums = "0123456789";
+		const chars_uc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		const chars_lc = "abcdefghijklmnopqrstuvwxyz";
 		
-		var target = nums + chars_uc + chars_lc;
-		var target_len = target.length;
+		const target = nums + chars_uc + chars_lc;
+		const target_len = target.length;
 		
-		var result = "";
-		for (var i = 0; i < len; i++) {
+		let result = "";
+		for (let i = 0; i < len; i++) {
 			result += target[Math.random() * target_len | 0];
 		}
 		return result;
