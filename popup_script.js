@@ -11,8 +11,9 @@
 		const nums = "0123456789";
 		const chars_uc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		const chars_lc = "abcdefghijklmnopqrstuvwxyz";
+		const symbols = "!#$%&()@[{;:]+*},./<>?";
 		
-		const target = nums + chars_uc + chars_lc;
+		const target = nums + chars_uc + chars_lc + symbols;
 		const target_len = target.length;
 		
 		let result = "";
