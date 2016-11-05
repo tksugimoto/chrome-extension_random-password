@@ -4,6 +4,9 @@
 	const randomStringLengthInput = document.getElementById("random-string-length");
 	const getRandomStringLength = () => parseInt(randomStringLengthInput.value);
 
+	randomStringLengthInput.addEventListener("focus", () => {
+		randomStringLengthInput.select();
+	});
 	randomStringLengthInput.addEventListener("keydown", evt => {
 		if (evt.key == "Enter") {
 			displayNewRandomString();
