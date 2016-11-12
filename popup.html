@@ -10,12 +10,34 @@
 		input#random-string {
 			width: 100%;
 		}
+
+		label.checkbox input:checked + span  {
+			font-weight: bold;
+		}
+		label.checkbox input,
+		label.checkbox {
+			cursor: pointer;
+			user-select: none;
+			-webkit-user-select: none;
+		}
+		label.checkbox > input,
+		label.checkbox > span {
+			vertical-align: middle;
+		}
 	</style>
 </head>
 <body>
 	<p>
 		文字数：
 		<input type="number" id="random-string-length" value="30">
+	</p>
+	<p>
+		<label class="checkbox">
+			<input type="checkbox" id="include_symbols" checked>
+			<span>
+				記号
+			</span>
+		</label>
 	</p>
 	<p>
 		乱数：

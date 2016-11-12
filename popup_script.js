@@ -13,6 +13,12 @@
 		}
 	});
 
+	let include_symbols = document.getElementById("include_symbols").checked;
+	document.getElementById("include_symbols").addEventListener("change", evt => {
+		include_symbols = evt.target.checked;
+		displayNewRandomString();
+	});
+
 	function displayNewRandomString() {
 		randomStringInput.value = createRandomString(getRandomStringLength());
 		randomStringInput.focus();
@@ -26,7 +32,8 @@
 		const chars_lc = "abcdefghijklmnopqrstuvwxyz";
 		const symbols = "!#$%&()@[{;:]+*},./<>?";
 		
-		const target = nums + chars_uc + chars_lc + symbols;
+		let target = nums + chars_uc + chars_lc;
+		if (include_symbols) target += symbols;
 		const target_len = target.length;
 		
 		let result = "";
