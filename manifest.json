@@ -1,14 +1,14 @@
 {
-  "name": "乱数作成",
+  "name": "ランダムパスワード作成",
   "version": "0.1",
   "manifest_version": 2,
-  "description": "パスワード用の乱数作成",
+  "description": "Create random string for password",
   "icons": {
     "128": "icon/icon.png"
   },
   "browser_action": {
     "default_icon": "icon/icon.png",
-    "default_title": "乱数作成",
+    "default_title": "ランダムパスワード作成",
     "default_popup": "popup.html"
   }
 }
