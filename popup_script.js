@@ -1,5 +1,44 @@
 (function () {
 	"use strict";
+
+	const PasswordCharsSettings = [{
+		name: "数字",
+		chars: "0123456789"
+	}, {
+		name: "アルファベット（小文字）",
+		chars: "abcdefghijklmnopqrstuvwxyz"
+	}, {
+		name: "アルファベット（小文字）",
+		chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	}, {
+		name: "記号",
+		chars: "!#$%&()@[{;:]+*},./<>?"
+	}];
+
+	const getPasswordChars = PasswordCharsSettings.map(setting => {
+		const label = document.createElement("label");
+		label.classList.add("checkbox");
+
+		const input = document.createElement("input");
+		input.type = "checkbox";
+		input.checked = true;
+		label.append(input);
+
+		const span = document.createElement("span");
+		span.innerText = setting.name;
+		label.append(span);
+
+		document.getElementById("settings").append(label);
+
+		input.addEventListener("change", evt => {
+			displayNewRandomString();
+		});
+
+		return () => {
+			return input.checked ? setting.chars : "";
+		};
+	});
+
 	const randomStringInput = document.getElementById("random-string");
 	const randomStringLengthInput = document.getElementById("random-string-length");
 	const getRandomStringLength = () => parseInt(randomStringLengthInput.value);
@@ -13,12 +52,6 @@
 		}
 	});
 
-	let include_symbols = document.getElementById("include_symbols").checked;
-	document.getElementById("include_symbols").addEventListener("change", evt => {
-		include_symbols = evt.target.checked;
-		displayNewRandomString();
-	});
-
 	function displayNewRandomString() {
 		randomStringInput.value = createRandomString(getRandomStringLength());
 		randomStringInput.focus();
@@ -27,13 +60,10 @@
 	displayNewRandomString();
 
 	function createRandomString(len) {
-		const nums = "0123456789";
-		const chars_uc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		const chars_lc = "abcdefghijklmnopqrstuvwxyz";
-		const symbols = "!#$%&()@[{;:]+*},./<>?";
-		
-		let target = nums + chars_uc + chars_lc;
-		if (include_symbols) target += symbols;
+
+		const target = getPasswordChars.map(fn => fn()).join("");
+		if (target === "") return "";
+
 		const target_len = target.length;
 		
 		let result = "";

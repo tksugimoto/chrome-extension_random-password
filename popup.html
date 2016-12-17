@@ -11,6 +11,9 @@
 			width: 100%;
 		}
 
+		label.checkbox {
+			display: block;
+		}
 		label.checkbox input:checked + span  {
 			font-weight: bold;
 		}
@@ -31,13 +34,7 @@
 		文字数：
 		<input type="number" id="random-string-length" value="30">
 	</p>
-	<p>
-		<label class="checkbox">
-			<input type="checkbox" id="include_symbols" checked>
-			<span>
-				記号
-			</span>
-		</label>
+	<p id="settings">
 	</p>
 	<p>
 		乱数：
