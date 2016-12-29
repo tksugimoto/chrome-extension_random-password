@@ -14,9 +14,10 @@
 			width: 100%;
 		}
 
-		label.checkbox {
-			display: block;
+		ul#settings {
+			list-style-type: none;
 		}
+
 		label.checkbox input:checked + span  {
 			font-weight: bold;
 		}
@@ -37,7 +38,10 @@
 		文字数：
 		<input type="number" id="random-string-length" value="30" min="1">
 	</p>
-	<p id="settings">
+	<p>
+		文字種別：
+		<ul id="settings">
+		</ul>
 	</p>
 	<p>
 		乱数：

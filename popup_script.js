@@ -28,7 +28,9 @@
 		span.innerText = setting.name;
 		label.append(span);
 
-		document.getElementById("settings").append(label);
+		const li = document.createElement("li");
+		li.append(label);
+		document.getElementById("settings").append(li);
 
 		input.addEventListener("change", evt => {
 			displayNewRandomString();
@@ -78,7 +80,7 @@
 		if (target === "") return "";
 
 		const target_len = target.length;
-		
+
 		let result = "";
 		for (let i = 0; i < len; i++) {
 			result += target[Math.random() * target_len | 0];
