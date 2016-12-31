@@ -48,10 +48,8 @@
 	randomStringLengthInput.addEventListener("focus", () => {
 		randomStringLengthInput.select();
 	});
-	randomStringLengthInput.addEventListener("keydown", evt => {
-		if (evt.key == "Enter") {
-			displayNewRandomString();
-		}
+	randomStringLengthInput.addEventListener("change", evt => {
+		displayNewRandomString();
 	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
 		// Chrome標準のホイールで値増減機能をOFF（フォーカスが当たっている時のみ）
