@@ -52,8 +52,6 @@
 		displayNewRandomString();
 	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
-		// Chrome標準のホイールで値増減機能をOFF（フォーカスが当たっている時のみ）
-		//evt.preventDefault();
 		const deltaY = evt.deltaY;
 		if (deltaY > 0) {
 			// ↓方向
