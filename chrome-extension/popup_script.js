@@ -8,7 +8,7 @@
 		name: "アルファベット（小文字）",
 		chars: "abcdefghijklmnopqrstuvwxyz"
 	}, {
-		name: "アルファベット（小文字）",
+		name: "アルファベット（大文字）",
 		chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	}, {
 		name: "記号",
