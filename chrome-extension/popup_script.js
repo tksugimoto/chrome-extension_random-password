@@ -54,8 +54,19 @@
 	randomStringLengthInput.addEventListener("focus", () => {
 		randomStringLengthInput.select();
 	});
+	const randomStringLengthMemory = {
+		localStorageKey: "random-string-length",
+		save: function (value) {
+			localStorage[this.localStorageKey] = value;
+		},
+		load: function (defValue) {
+			return parseInt(localStorage[this.localStorageKey]);
+		}
+	};
+	randomStringLengthInput.value = randomStringLengthMemory.load() || randomStringLengthInput.value;
 	randomStringLengthInput.addEventListener("change", evt => {
 		displayNewRandomString();
+		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
 		const deltaY = evt.deltaY;
@@ -67,6 +78,7 @@
 			randomStringLengthInput.stepUp()
 		}
 		displayNewRandomString();
+		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 
 	function displayNewRandomString() {
