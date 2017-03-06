@@ -2,26 +2,31 @@
 	"use strict";
 
 	const PasswordCharsSettings = [{
+		type: "number",
 		name: "数字",
 		chars: "0123456789"
 	}, {
+		type: "lower-case-alphabet",
 		name: "アルファベット（小文字）",
 		chars: "abcdefghijklmnopqrstuvwxyz"
 	}, {
+		type: "upper-case-alphabet",
 		name: "アルファベット（大文字）",
 		chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	}, {
+		type: "symbol",
 		name: "記号",
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
 	const getPasswordChars = PasswordCharsSettings.map(setting => {
+		const localStorageKey = `char-type.${setting.type}.enabled`;
 		const label = document.createElement("label");
 		label.classList.add("checkbox");
 
 		const input = document.createElement("input");
 		input.type = "checkbox";
-		input.checked = true;
+		input.checked = (localStorage[localStorageKey] || "true") === "true";
 		label.append(input);
 
 		const span = document.createElement("span");
@@ -34,6 +39,7 @@
 
 		input.addEventListener("change", evt => {
 			displayNewRandomString();
+			localStorage[localStorageKey] = input.checked;
 		});
 
 		return () => {
@@ -48,8 +54,19 @@
 	randomStringLengthInput.addEventListener("focus", () => {
 		randomStringLengthInput.select();
 	});
+	const randomStringLengthMemory = {
+		localStorageKey: "random-string-length",
+		save: function (value) {
+			localStorage[this.localStorageKey] = value;
+		},
+		load: function (defValue) {
+			return parseInt(localStorage[this.localStorageKey]);
+		}
+	};
+	randomStringLengthInput.value = randomStringLengthMemory.load() || randomStringLengthInput.value;
 	randomStringLengthInput.addEventListener("change", evt => {
 		displayNewRandomString();
+		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
 		const deltaY = evt.deltaY;
@@ -61,6 +78,7 @@
 			randomStringLengthInput.stepUp()
 		}
 		displayNewRandomString();
+		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 
 	function displayNewRandomString() {
