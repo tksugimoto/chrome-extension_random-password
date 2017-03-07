@@ -1,6 +1,38 @@
 (function () {
 	"use strict";
 
+	const excludeMistakableCharIfNeeded = (() => {
+		const type = "exclude-mistakable-char";
+		const mistakableChars = "1lI0Oo";
+		const name = `紛らわしい文字(${mistakableChars})を除外する`;
+
+		const localStorageKey = `options.exclude-mistakable-char.enabled`;
+		const label = document.createElement("label");
+		label.classList.add("checkbox");
+
+		const input = document.createElement("input");
+		input.type = "checkbox";
+		input.checked = (localStorage[localStorageKey] || "true") === "true";
+		label.append(input);
+
+		const span = document.createElement("span");
+		span.innerText = name;
+		label.append(span);
+
+		const li = document.createElement("li");
+		li.append(label);
+		document.getElementById("options").append(li);
+
+		input.addEventListener("change", evt => {
+			displayNewRandomString();
+			localStorage[localStorageKey] = input.checked;
+		});
+		return str => {
+			if (!input.checked) return str;
+			return Array.from(str).filter(char => !mistakableChars.includes(char)).join("");
+		};
+	})();
+
 	const PasswordCharsSettings = [{
 		type: "number",
 		name: "数字",
@@ -90,8 +122,10 @@
 
 	function createRandomString(len) {
 
-		const target = getPasswordChars.map(fn => fn()).join("");
+		let target = getPasswordChars.map(fn => fn()).join("");
 		if (target === "") return "";
+
+		target = excludeMistakableCharIfNeeded(target);
 
 		const target_len = target.length;
 
