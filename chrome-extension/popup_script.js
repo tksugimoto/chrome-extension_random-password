@@ -68,6 +68,11 @@
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
+	randomStringLengthInput.addEventListener("keydown", evt => {
+		if (evt.key == "Enter") {
+			displayNewRandomString();
+		}
+	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
 		const deltaY = evt.deltaY;
 		if (deltaY > 0) {
