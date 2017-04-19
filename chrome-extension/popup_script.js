@@ -68,6 +68,11 @@
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
+	randomStringLengthInput.addEventListener("keydown", evt => {
+		if (evt.key == "Enter") {
+			displayNewRandomString();
+		}
+	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
 		const deltaY = evt.deltaY;
 		if (deltaY > 0) {
@@ -80,6 +85,8 @@
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
+
+	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
 
 	function displayNewRandomString() {
 		randomStringInput.value = createRandomString(getRandomStringLength());
