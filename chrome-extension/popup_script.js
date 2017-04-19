@@ -81,6 +81,8 @@
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 
+	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
+
 	function displayNewRandomString() {
 		randomStringInput.value = createRandomString(getRandomStringLength());
 		randomStringInput.focus();
