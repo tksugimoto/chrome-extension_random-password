@@ -4,18 +4,22 @@
 	const PasswordCharsSettings = [{
 		type: "number",
 		name: "数字",
+		accesskey: "n",
 		chars: "0123456789"
 	}, {
 		type: "lower-case-alphabet",
 		name: "アルファベット（小文字）",
+		accesskey: "a",
 		chars: "abcdefghijklmnopqrstuvwxyz"
 	}, {
 		type: "upper-case-alphabet",
 		name: "アルファベット（大文字）",
+		accesskey: "u",
 		chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	}, {
 		type: "symbol",
 		name: "記号",
+		accesskey: "s",
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
@@ -23,6 +27,8 @@
 		const localStorageKey = `char-type.${setting.type}.enabled`;
 		const label = document.createElement("label");
 		label.classList.add("checkbox");
+		label.setAttribute("accesskey", setting.accesskey);
+		label.title = `ON/OFF ショートカットキー: Alt + ${setting.accesskey}`;
 
 		const input = document.createElement("input");
 		input.type = "checkbox";
