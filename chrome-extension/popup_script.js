@@ -115,3 +115,17 @@
 		return result;
 	}
 })();
+
+(function () {
+	const dataKey = "data-show-accesskey";
+	document.body.addEventListener("keydown", ({key}) => {
+		if (key === "Alt") {
+			document.body.setAttribute(dataKey, "true");
+		}
+	});
+	document.body.addEventListener("keyup", ({key}) => {
+		if (key === "Alt") {
+			document.body.removeAttribute(dataKey);
+		}
+	});
+})();

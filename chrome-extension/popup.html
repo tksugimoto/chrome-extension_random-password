@@ -37,6 +37,11 @@
 		label.checkbox > span {
 			vertical-align: middle;
 		}
+
+		body[data-show-accesskey] [accesskey]:after {
+			content: " ( " attr(accesskey) " )";
+			color: gray;
+		}
 	</style>
 </head>
 <body>
