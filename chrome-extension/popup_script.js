@@ -25,31 +25,23 @@
 
 	const getPasswordChars = PasswordCharsSettings.map(setting => {
 		const localStorageKey = `char-type.${setting.type}.enabled`;
-		const label = document.createElement("label");
-		label.classList.add("checkbox");
-		label.setAttribute("accesskey", setting.accesskey);
-		label.title = `ON/OFF ショートカットキー: Alt + ${setting.accesskey}`;
-
-		const input = document.createElement("input");
-		input.type = "checkbox";
-		input.checked = (localStorage[localStorageKey] || "true") === "true";
-		label.append(input);
-
-		const span = document.createElement("span");
-		span.innerText = setting.name;
-		label.append(span);
+		const checkBox = document.createElement("check-box");
+		checkBox.setAttribute("accesskey", setting.accesskey);
+		checkBox.title = `ON/OFF ショートカットキー: Alt + ${setting.accesskey}`;
+		checkBox.checked = (localStorage[localStorageKey] || "true") === "true";
+		checkBox.innerText = setting.name;
 
 		const li = document.createElement("li");
-		li.append(label);
+		li.append(checkBox);
 		document.getElementById("settings").append(li);
 
-		input.addEventListener("change", evt => {
+		checkBox.addEventListener("change", evt => {
 			displayNewRandomString();
-			localStorage[localStorageKey] = input.checked;
+			localStorage[localStorageKey] = checkBox.checked;
 		});
 
 		return () => {
-			return input.checked ? setting.chars : "";
+			return checkBox.checked ? setting.chars : "";
 		};
 	});
 
