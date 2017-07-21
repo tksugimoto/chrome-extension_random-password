@@ -18,13 +18,6 @@
 			
 			this._checkbox = shadowRoot.querySelector("input");
 			
-			if (this.hasAttribute("checked")) {
-				this._checkbox.checked = true;
-			}
-			if (this.hasAttribute("disabled")) {
-				this._checkbox.disabled = true;
-			}
-			
 			this._checkbox.addEventListener("change", () => {
 				const checked = this._checkbox.checked;
 				this._updateCheckedAttribute(checked);
@@ -38,6 +31,7 @@
 			return [
 				"checked",
 				"disabled",
+				"accesskey",
 			];
 		}
 
@@ -48,6 +42,12 @@
 			} else if (name === "disabled") {
 				const disabled = newValue !== null;
 				this._checkbox.disabled = disabled;
+			} else if (name === "accesskey") {
+				if (newValue) {
+					this._checkbox.setAttribute("accesskey", newValue);
+				} else {
+					this._checkbox.removeAttribute("accesskey");
+				}
 			}
 		}
 
