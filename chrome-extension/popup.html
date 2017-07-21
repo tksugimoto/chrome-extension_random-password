@@ -13,34 +13,32 @@
 		input#random-string {
 			width: 100%;
 		}
+		#re-create {
+			cursor: pointer;
+		}
 
 		ul#settings,
 		ul#options {
 			list-style-type: none;
 		}
 
-		label.checkbox:hover {
+		check-box:hover {
 			background: rgb(255, 255, 192);
 		}
-		label.checkbox input:checked + span {
-			font-weight: bold;
-		}
-		label.checkbox input,
-		label.checkbox {
-			cursor: pointer;
-			user-select: none;
-			-webkit-user-select: none;
-		}
-		label.checkbox > input,
-		label.checkbox > span {
-			vertical-align: middle;
+
+		body[data-show-accesskey] [accesskey]:after {
+			content: " ( " attr(accesskey) " )";
+			color: gray;
 		}
 	</style>
+	<link rel="import" href="web-components/check-box.html">
 </head>
 <body>
 	<p>
-		文字数：
-		<input type="number" id="random-string-length" value="30" min="1">
+		<label accesskey="l" title="Alt + L でフォーカス移動">
+			文字数：
+			<input type="number" id="random-string-length" value="30" min="1">
+		</label>
 	</p>
 	<p>
 		文字種：
@@ -55,6 +53,9 @@
 	<p>
 		乱数：
 		<input type="text" id="random-string">
+	</p>
+	<p>
+		<button type="button" id="re-create" accesskey="x" title="Alt + X で再生成">再作成</button>
 	</p>
 	<script src="popup_script.js"></script>
 </body>

@@ -36,46 +36,44 @@
 	const PasswordCharsSettings = [{
 		type: "number",
 		name: "数字",
+		accesskey: "n",
 		chars: "0123456789"
 	}, {
 		type: "lower-case-alphabet",
 		name: "アルファベット（小文字）",
+		accesskey: "a",
 		chars: "abcdefghijklmnopqrstuvwxyz"
 	}, {
 		type: "upper-case-alphabet",
 		name: "アルファベット（大文字）",
+		accesskey: "u",
 		chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	}, {
 		type: "symbol",
 		name: "記号",
+		accesskey: "s",
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
 	const getPasswordChars = PasswordCharsSettings.map(setting => {
 		const localStorageKey = `char-type.${setting.type}.enabled`;
-		const label = document.createElement("label");
-		label.classList.add("checkbox");
-
-		const input = document.createElement("input");
-		input.type = "checkbox";
-		input.checked = (localStorage[localStorageKey] || "true") === "true";
-		label.append(input);
-
-		const span = document.createElement("span");
-		span.innerText = setting.name;
-		label.append(span);
+		const checkBox = document.createElement("check-box");
+		checkBox.setAttribute("accesskey", setting.accesskey);
+		checkBox.title = `ON/OFF ショートカットキー: Alt + ${setting.accesskey}`;
+		checkBox.checked = (localStorage[localStorageKey] || "true") === "true";
+		checkBox.innerText = setting.name;
 
 		const li = document.createElement("li");
-		li.append(label);
+		li.append(checkBox);
 		document.getElementById("settings").append(li);
 
-		input.addEventListener("change", evt => {
+		checkBox.addEventListener("change", evt => {
 			displayNewRandomString();
-			localStorage[localStorageKey] = input.checked;
+			localStorage[localStorageKey] = checkBox.checked;
 		});
 
 		return () => {
-			return input.checked ? setting.chars : "";
+			return checkBox.checked ? setting.chars : "";
 		};
 	});
 
@@ -100,6 +98,11 @@
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
+	randomStringLengthInput.addEventListener("keydown", evt => {
+		if (evt.key == "Enter") {
+			displayNewRandomString();
+		}
+	});
 	randomStringLengthInput.addEventListener("wheel", evt => {
 		const deltaY = evt.deltaY;
 		if (deltaY > 0) {
@@ -112,6 +115,8 @@
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
+
+	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
 
 	function displayNewRandomString() {
 		randomStringInput.value = createRandomString(getRandomStringLength());
@@ -135,4 +140,18 @@
 		}
 		return result;
 	}
+})();
+
+(function () {
+	const dataKey = "data-show-accesskey";
+	document.body.addEventListener("keydown", ({key}) => {
+		if (key === "Alt") {
+			document.body.setAttribute(dataKey, "true");
+		}
+	});
+	document.body.addEventListener("keyup", ({key}) => {
+		if (key === "Alt") {
+			document.body.removeAttribute(dataKey);
+		}
+	});
 })();
