@@ -44,6 +44,7 @@
 		type: "symbol",
 		name: "記号",
 		accesskey: "s",
+		individualSelection: true,
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
@@ -63,6 +64,41 @@
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
+
+		if (setting.individualSelection) {
+			const details = document.createElement("details");
+			details.classList.add("individual-selection");
+			const summary = document.createElement("summary");
+			summary.innerText = "個別設定";
+			details.append(summary);
+
+			const chars = Array.from(setting.chars).map(char => {
+				const eachCharCheckBox = document.createElement("check-box");
+				eachCharCheckBox.checked = true;
+				eachCharCheckBox.innerText = char;
+				eachCharCheckBox.addEventListener("change", () => {
+					if (checkBox.checked) displayNewRandomString();
+				});
+				details.append(eachCharCheckBox);
+
+				return {
+					char,
+					selected: () => eachCharCheckBox.checked,
+				};
+			});
+
+			li.append(details);
+
+			const getSelectedChars = () => {
+				return chars.map(({ selected, char }) => {
+					return selected() ? char : "";
+				}).join("");
+			};
+
+			return () => {
+				return checkBox.checked ? getSelectedChars() : "";
+			};
+		}
 
 		return () => {
 			return checkBox.checked ? setting.chars : "";
