@@ -7,28 +7,20 @@
 		const name = `紛らわしい文字(${mistakableChars})を除外する`;
 
 		const localStorageKey = `options.exclude-mistakable-char.enabled`;
-		const label = document.createElement("label");
-		label.classList.add("checkbox");
-
-		const input = document.createElement("input");
-		input.type = "checkbox";
-		input.checked = (localStorage[localStorageKey] || "true") === "true";
-		label.append(input);
-
-		const span = document.createElement("span");
-		span.innerText = name;
-		label.append(span);
+		const checkBox = document.createElement("check-box");
+		checkBox.checked = (localStorage[localStorageKey] || "true") === "true";
+		checkBox.innerText = name;
 
 		const li = document.createElement("li");
-		li.append(label);
+		li.append(checkBox);
 		document.getElementById("options").append(li);
 
-		input.addEventListener("change", evt => {
+		checkBox.addEventListener("change", evt => {
 			displayNewRandomString();
-			localStorage[localStorageKey] = input.checked;
+			localStorage[localStorageKey] = checkBox.checked;
 		});
 		return str => {
-			if (!input.checked) return str;
+			if (!checkBox.checked) return str;
 			return Array.from(str).filter(char => !mistakableChars.includes(char)).join("");
 		};
 	})();
