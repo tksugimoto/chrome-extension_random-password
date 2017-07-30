@@ -74,7 +74,7 @@
 
 			const chars = Array.from(setting.chars).map(char => {
 				const eachCharCheckBox = document.createElement("check-box");
-				eachCharCheckBox.checked = true;
+				eachCharCheckBox.checked = checkBox.checked;
 				eachCharCheckBox.innerText = char;
 				eachCharCheckBox.addEventListener("change", () => {
 					if (checkBox.checked) displayNewRandomString();
@@ -84,10 +84,18 @@
 				return {
 					char,
 					selected: () => eachCharCheckBox.checked,
+					setChecked: (checked) => eachCharCheckBox.checked = checked,
 				};
 			});
 
 			li.append(details);
+
+			checkBox.addEventListener("change", () => {
+				chars.forEach(({ setChecked }) => {
+					setChecked(checkBox.checked);
+				});
+				displayNewRandomString();
+			});
 
 			const getSelectedChars = () => {
 				return chars.map(({ selected, char }) => {
