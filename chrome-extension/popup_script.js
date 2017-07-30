@@ -77,7 +77,8 @@
 				eachCharCheckBox.checked = checkBox.checked;
 				eachCharCheckBox.innerText = char;
 				eachCharCheckBox.addEventListener("change", () => {
-					if (checkBox.checked) displayNewRandomString();
+					checkBox.checked = chars.some(({ selected }) => selected());
+					displayNewRandomString();
 				});
 				details.append(eachCharCheckBox);
 
