@@ -77,14 +77,16 @@
 				eachCharCheckBox.checked = checkBox.checked;
 				eachCharCheckBox.innerText = char;
 				eachCharCheckBox.addEventListener("change", () => {
-					checkBox.checked = chars.some(({ selected }) => selected());
+					checkBox.checked = chars.some(({ selected }) => selected);
 					displayNewRandomString();
 				});
 				details.append(eachCharCheckBox);
 
 				return {
 					char,
-					selected: () => eachCharCheckBox.checked,
+					get selected() {
+						return eachCharCheckBox.checked;
+					},
 					setChecked: (checked) => eachCharCheckBox.checked = checked,
 				};
 			});
@@ -100,7 +102,7 @@
 
 			const getSelectedChars = () => {
 				return chars.map(({ selected, char }) => {
-					return selected() ? char : "";
+					return selected ? char : "";
 				}).join("");
 			};
 
