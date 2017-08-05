@@ -189,10 +189,11 @@
 	function createRandomString(len) {
 
 		let target = getPasswordChars.map(fn => fn()).join("");
-		if (target === "") return "";
 
 		target = excludeMistakableCharIfNeeded(target);
 		target = useMistakableCharOnlyIfNeeded(target);
+
+		if (target === "") return "";
 
 		const target_len = target.length;
 
