@@ -24,6 +24,29 @@
 		};
 	})();
 
+	const useMistakableCharOnlyIfNeeded = (() => {
+		const mistakableChars = "1lI0Oo";
+		const name = `紛らわしい文字(${mistakableChars})のみを使う（ジョーク機能）`;
+
+		const localStorageKey = `options.use-mistakable-char-only.enabled`;
+		const checkBox = document.createElement("check-box");
+		checkBox.checked = (localStorage[localStorageKey] || "false") === "true";
+		checkBox.innerText = name;
+
+		const li = document.createElement("li");
+		li.append(checkBox);
+		document.getElementById("options").append(li);
+
+		checkBox.addEventListener("change", evt => {
+			displayNewRandomString();
+			localStorage[localStorageKey] = checkBox.checked;
+		});
+		return str => {
+			if (!checkBox.checked) return str;
+			return Array.from(str).filter(char => mistakableChars.includes(char)).join("");
+		};
+	})();
+
 	const PasswordCharsSettings = [{
 		type: "number",
 		name: "数字",
@@ -169,6 +192,7 @@
 		if (target === "") return "";
 
 		target = excludeMistakableCharIfNeeded(target);
+		target = useMistakableCharOnlyIfNeeded(target);
 
 		const target_len = target.length;
 
