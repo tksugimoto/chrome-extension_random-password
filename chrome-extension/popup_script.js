@@ -2,7 +2,6 @@
 	"use strict";
 
 	const excludeMistakableCharIfNeeded = (() => {
-		const type = "exclude-mistakable-char";
 		const mistakableChars = "1lI0Oo";
 		const name = `紛らわしい文字(${mistakableChars})を除外する`;
 
