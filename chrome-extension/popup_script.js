@@ -2,13 +2,24 @@
 	"use strict";
 
 	const mistakableChars = "1lI0Oo";
-	const excludeMistakableCharIfNeeded = (() => {
-		const name = `紛らわしい文字(${mistakableChars})を除外する`;
+	const optionSettings = [{
+		type: "exclude-mistakable-char",
+		name: `紛らわしい文字(${mistakableChars})を除外する`,
+		defaultValue: "true",
+		filterChars: str => Array.from(str).filter(char => !mistakableChars.includes(char)).join(""),
+	}, {
+		type: "use-mistakable-char-only",
+		name: `紛らわしい文字(${mistakableChars})のみを使う（ジョーク機能）`,
+		defaultValue: "false",
+		filterChars: str => Array.from(str).filter(char => mistakableChars.includes(char)).join(""),
+	}];
 
-		const localStorageKey = `options.exclude-mistakable-char.enabled`;
+	optionSettings.forEach(optionSetting => {
+		const localStorageKey = `options.${optionSetting.type}.enabled`;
 		const checkBox = document.createElement("check-box");
-		checkBox.checked = (localStorage[localStorageKey] || "true") === "true";
-		checkBox.innerText = name;
+		const defaultValue = optionSetting.defaultValue;
+		checkBox.checked = (localStorage[localStorageKey] || defaultValue) === "true";
+		checkBox.innerText = optionSetting.name;
 
 		const li = document.createElement("li");
 		li.append(checkBox);
@@ -18,33 +29,12 @@
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
-		return str => {
+
+		optionSetting.filterCharsIfNeeded = str => {
 			if (!checkBox.checked) return str;
-			return Array.from(str).filter(char => !mistakableChars.includes(char)).join("");
+			return optionSetting.filterChars(str);
 		};
-	})();
-
-	const useMistakableCharOnlyIfNeeded = (() => {
-		const name = `紛らわしい文字(${mistakableChars})のみを使う（ジョーク機能）`;
-
-		const localStorageKey = `options.use-mistakable-char-only.enabled`;
-		const checkBox = document.createElement("check-box");
-		checkBox.checked = (localStorage[localStorageKey] || "false") === "true";
-		checkBox.innerText = name;
-
-		const li = document.createElement("li");
-		li.append(checkBox);
-		document.getElementById("options").append(li);
-
-		checkBox.addEventListener("change", evt => {
-			displayNewRandomString();
-			localStorage[localStorageKey] = checkBox.checked;
-		});
-		return str => {
-			if (!checkBox.checked) return str;
-			return Array.from(str).filter(char => mistakableChars.includes(char)).join("");
-		};
-	})();
+	});
 
 	const PasswordCharsSettings = [{
 		type: "number",
@@ -189,8 +179,9 @@
 
 		let target = getPasswordChars.map(fn => fn()).join("");
 
-		target = excludeMistakableCharIfNeeded(target);
-		target = useMistakableCharOnlyIfNeeded(target);
+		optionSettings.forEach(({ filterCharsIfNeeded }) => {
+			target = filterCharsIfNeeded(target);
+		});
 
 		if (target === "") return "";
 
