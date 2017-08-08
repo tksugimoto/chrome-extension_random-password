@@ -1,8 +1,8 @@
 (function () {
 	"use strict";
 
+	const mistakableChars = "1lI0Oo";
 	const excludeMistakableCharIfNeeded = (() => {
-		const mistakableChars = "1lI0Oo";
 		const name = `紛らわしい文字(${mistakableChars})を除外する`;
 
 		const localStorageKey = `options.exclude-mistakable-char.enabled`;
@@ -25,7 +25,6 @@
 	})();
 
 	const useMistakableCharOnlyIfNeeded = (() => {
-		const mistakableChars = "1lI0Oo";
 		const name = `紛らわしい文字(${mistakableChars})のみを使う（ジョーク機能）`;
 
 		const localStorageKey = `options.use-mistakable-char-only.enabled`;
