@@ -1,7 +1,7 @@
 (function () {
 	"use strict";
 
-	const mistakableChars = "1lI0Oo";
+	const mistakableChars = "1lIi![]0Oo@";
 	const optionSettings = [{
 		type: "exclude-mistakable-char",
 		name: `紛らわしい文字(${mistakableChars})を除外する`,
