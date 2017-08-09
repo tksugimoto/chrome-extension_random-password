@@ -17,8 +17,19 @@
 			cursor: pointer;
 		}
 
-		ul#settings {
+		ul#settings,
+		ul#options {
 			list-style-type: none;
+		}
+
+		li details.individual-selection {
+			margin-left: 20px;
+		}
+		li details.individual-selection summary {
+			cursor: pointer;
+		}
+		.individual-selection check-box:not(:last-of-type) {
+			margin-right: 20px;
 		}
 
 		check-box:hover {
@@ -42,6 +53,11 @@
 	<p>
 		文字種：
 		<ul id="settings">
+		</ul>
+	</p>
+	<p>
+		オプション：
+		<ul id="options">
 		</ul>
 	</p>
 	<p>

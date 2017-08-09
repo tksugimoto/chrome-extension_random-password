@@ -1,6 +1,41 @@
 (function () {
 	"use strict";
 
+	const mistakableChars = "1lIi![]0Oo@";
+	const optionSettings = [{
+		type: "exclude-mistakable-char",
+		name: `紛らわしい文字(${mistakableChars})を除外する`,
+		defaultValue: "true",
+		filterChars: str => Array.from(str).filter(char => !mistakableChars.includes(char)).join(""),
+	}, {
+		type: "use-mistakable-char-only",
+		name: `紛らわしい文字(${mistakableChars})のみを使う（ジョーク機能）`,
+		defaultValue: "false",
+		filterChars: str => Array.from(str).filter(char => mistakableChars.includes(char)).join(""),
+	}];
+
+	optionSettings.forEach(optionSetting => {
+		const localStorageKey = `options.${optionSetting.type}.enabled`;
+		const checkBox = document.createElement("check-box");
+		const defaultValue = optionSetting.defaultValue;
+		checkBox.checked = (localStorage[localStorageKey] || defaultValue) === "true";
+		checkBox.innerText = optionSetting.name;
+
+		const li = document.createElement("li");
+		li.append(checkBox);
+		document.getElementById("options").append(li);
+
+		checkBox.addEventListener("change", evt => {
+			displayNewRandomString();
+			localStorage[localStorageKey] = checkBox.checked;
+		});
+
+		optionSetting.filterCharsIfNeeded = str => {
+			if (!checkBox.checked) return str;
+			return optionSetting.filterChars(str);
+		};
+	});
+
 	const PasswordCharsSettings = [{
 		type: "number",
 		name: "数字",
@@ -20,6 +55,7 @@
 		type: "symbol",
 		name: "記号",
 		accesskey: "s",
+		individualSelection: true,
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
@@ -39,6 +75,52 @@
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
+
+		if (setting.individualSelection) {
+			const details = document.createElement("details");
+			details.classList.add("individual-selection");
+			const summary = document.createElement("summary");
+			summary.innerText = "個別設定";
+			details.append(summary);
+
+			const chars = Array.from(setting.chars).map(char => {
+				const eachCharCheckBox = document.createElement("check-box");
+				eachCharCheckBox.checked = checkBox.checked;
+				eachCharCheckBox.innerText = char;
+				eachCharCheckBox.addEventListener("change", () => {
+					checkBox.checked = chars.some(({ selected }) => selected);
+					displayNewRandomString();
+				});
+				details.append(eachCharCheckBox);
+
+				return {
+					char,
+					get selected() {
+						return eachCharCheckBox.checked;
+					},
+					setChecked: (checked) => eachCharCheckBox.checked = checked,
+				};
+			});
+
+			li.append(details);
+
+			checkBox.addEventListener("change", () => {
+				chars.forEach(({ setChecked }) => {
+					setChecked(checkBox.checked);
+				});
+				displayNewRandomString();
+			});
+
+			const getSelectedChars = () => {
+				return chars.map(({ selected, char }) => {
+					return selected ? char : "";
+				}).join("");
+			};
+
+			return () => {
+				return checkBox.checked ? getSelectedChars() : "";
+			};
+		}
 
 		return () => {
 			return checkBox.checked ? setting.chars : "";
@@ -95,7 +177,12 @@
 
 	function createRandomString(len) {
 
-		const target = getPasswordChars.map(fn => fn()).join("");
+		let target = getPasswordChars.map(fn => fn()).join("");
+
+		optionSettings.forEach(({ filterCharsIfNeeded }) => {
+			target = filterCharsIfNeeded(target);
+		});
+
 		if (target === "") return "";
 
 		const target_len = target.length;
