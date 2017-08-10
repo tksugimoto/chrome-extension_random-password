@@ -148,13 +148,12 @@
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
-	randomStringLengthInput.addEventListener("keydown", evt => {
-		if (evt.key == "Enter") {
+	randomStringLengthInput.addEventListener("keydown", ({key}) => {
+		if (key == "Enter") {
 			displayNewRandomString();
 		}
 	});
-	randomStringLengthInput.addEventListener("wheel", evt => {
-		const deltaY = evt.deltaY;
+	randomStringLengthInput.addEventListener("wheel", ({deltaY}) => {
 		if (deltaY > 0) {
 			// ↓方向
 			randomStringLengthInput.stepDown()
