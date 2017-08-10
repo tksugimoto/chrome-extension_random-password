@@ -25,7 +25,7 @@
 		li.append(checkBox);
 		document.getElementById("options").append(li);
 
-		checkBox.addEventListener("change", evt => {
+		checkBox.addEventListener("change", () => {
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
@@ -71,7 +71,7 @@
 		li.append(checkBox);
 		document.getElementById("settings").append(li);
 
-		checkBox.addEventListener("change", evt => {
+		checkBox.addEventListener("change", () => {
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
@@ -144,7 +144,7 @@
 		}
 	};
 	randomStringLengthInput.value = randomStringLengthMemory.load() || randomStringLengthInput.value;
-	randomStringLengthInput.addEventListener("change", evt => {
+	randomStringLengthInput.addEventListener("change", () => {
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
