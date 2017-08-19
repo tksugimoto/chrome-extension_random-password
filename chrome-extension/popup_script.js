@@ -137,10 +137,10 @@
 	});
 	const randomStringLengthMemory = {
 		localStorageKey: "random-string-length",
-		save: function (value) {
+		save(value) {
 			localStorage[this.localStorageKey] = value;
 		},
-		load: function (defValue) {
+		load(defValue) {
 			return parseInt(localStorage[this.localStorageKey]);
 		}
 	};
