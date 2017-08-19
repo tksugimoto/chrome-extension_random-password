@@ -59,7 +59,7 @@
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
-	const getPasswordChars = PasswordCharsSettings.map(setting => {
+	PasswordCharsSettings.forEach(setting => {
 		const localStorageKey = `char-type.${setting.type}.enabled`;
 		const checkBox = document.createElement("check-box");
 		checkBox.setAttribute("accesskey", setting.accesskey);
@@ -117,12 +117,13 @@
 				}).join("");
 			};
 
-			return () => {
+			setting.getCharsIfSelected = () => {
 				return checkBox.checked ? getSelectedChars() : "";
 			};
+			return;
 		}
 
-		return () => {
+		setting.getCharsIfSelected = () => {
 			return checkBox.checked ? setting.chars : "";
 		};
 	});
@@ -176,7 +177,11 @@
 
 	function createRandomString(len) {
 
-		let target = getPasswordChars.map(fn => fn()).join("");
+		let target = "";
+
+		PasswordCharsSettings.forEach(({ getCharsIfSelected }) => {
+			target += getCharsIfSelected();
+		});
 
 		optionSettings.forEach(({ filterCharsIfNeeded }) => {
 			target = filterCharsIfNeeded(target);
