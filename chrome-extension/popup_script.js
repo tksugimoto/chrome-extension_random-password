@@ -1,4 +1,4 @@
-(function () {
+(() => {
 	"use strict";
 
 	const mistakableChars = "1lIi![]0Oo@";
@@ -166,16 +166,15 @@
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 
-	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
-
-	function displayNewRandomString() {
+	const displayNewRandomString = () => {
 		randomStringInput.value = createRandomString(getRandomStringLength());
 		randomStringInput.focus();
 		randomStringInput.select();
-	}
-	displayNewRandomString();
+	};
 
-	function createRandomString(len) {
+	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
+
+	const createRandomString = (len) => {
 
 		let target = "";
 
@@ -196,10 +195,12 @@
 			result += target[Math.random() * target_len | 0];
 		}
 		return result;
-	}
+	};
+
+	displayNewRandomString();
 })();
 
-(function () {
+(() => {
 	const dataKey = "data-show-accesskey";
 	document.body.addEventListener("keydown", ({key}) => {
 		if (key === "Alt") {
