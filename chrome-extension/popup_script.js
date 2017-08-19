@@ -1,4 +1,4 @@
-(function () {
+(() => {
 	"use strict";
 
 	const mistakableChars = "1lIi![]0Oo@";
@@ -25,7 +25,7 @@
 		li.append(checkBox);
 		document.getElementById("options").append(li);
 
-		checkBox.addEventListener("change", evt => {
+		checkBox.addEventListener("change", () => {
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
@@ -59,7 +59,7 @@
 		chars: "!#$%&()@[{;:]+*},./<>?"
 	}];
 
-	const getPasswordChars = PasswordCharsSettings.map(setting => {
+	PasswordCharsSettings.forEach(setting => {
 		const localStorageKey = `char-type.${setting.type}.enabled`;
 		const checkBox = document.createElement("check-box");
 		checkBox.setAttribute("accesskey", setting.accesskey);
@@ -71,7 +71,7 @@
 		li.append(checkBox);
 		document.getElementById("settings").append(li);
 
-		checkBox.addEventListener("change", evt => {
+		checkBox.addEventListener("change", () => {
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
@@ -117,12 +117,13 @@
 				}).join("");
 			};
 
-			return () => {
+			setting.getCharsIfSelected = () => {
 				return checkBox.checked ? getSelectedChars() : "";
 			};
+			return;
 		}
 
-		return () => {
+		setting.getCharsIfSelected = () => {
 			return checkBox.checked ? setting.chars : "";
 		};
 	});
@@ -136,25 +137,24 @@
 	});
 	const randomStringLengthMemory = {
 		localStorageKey: "random-string-length",
-		save: function (value) {
+		save(value) {
 			localStorage[this.localStorageKey] = value;
 		},
-		load: function (defValue) {
+		load(defValue) {
 			return parseInt(localStorage[this.localStorageKey]);
 		}
 	};
 	randomStringLengthInput.value = randomStringLengthMemory.load() || randomStringLengthInput.value;
-	randomStringLengthInput.addEventListener("change", evt => {
+	randomStringLengthInput.addEventListener("change", () => {
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
-	randomStringLengthInput.addEventListener("keydown", evt => {
-		if (evt.key == "Enter") {
+	randomStringLengthInput.addEventListener("keydown", ({key}) => {
+		if (key == "Enter") {
 			displayNewRandomString();
 		}
 	});
-	randomStringLengthInput.addEventListener("wheel", evt => {
-		const deltaY = evt.deltaY;
+	randomStringLengthInput.addEventListener("wheel", ({deltaY}) => {
 		if (deltaY > 0) {
 			// ↓方向
 			randomStringLengthInput.stepDown()
@@ -166,18 +166,21 @@
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
 
-	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
-
-	function displayNewRandomString() {
+	const displayNewRandomString = () => {
 		randomStringInput.value = createRandomString(getRandomStringLength());
 		randomStringInput.focus();
 		randomStringInput.select();
-	}
-	displayNewRandomString();
+	};
 
-	function createRandomString(len) {
+	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
 
-		let target = getPasswordChars.map(fn => fn()).join("");
+	const createRandomString = (len) => {
+
+		let target = "";
+
+		PasswordCharsSettings.forEach(({ getCharsIfSelected }) => {
+			target += getCharsIfSelected();
+		});
 
 		optionSettings.forEach(({ filterCharsIfNeeded }) => {
 			target = filterCharsIfNeeded(target);
@@ -192,10 +195,12 @@
 			result += target[Math.random() * target_len | 0];
 		}
 		return result;
-	}
+	};
+
+	displayNewRandomString();
 })();
 
-(function () {
+(() => {
 	const dataKey = "data-show-accesskey";
 	document.body.addEventListener("keydown", ({key}) => {
 		if (key === "Alt") {
