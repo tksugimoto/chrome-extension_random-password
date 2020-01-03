@@ -1,4 +1,4 @@
-(() => {
+customElements.whenDefined('check-box').then(() => {
 	'use strict';
 
 	const mistakableChars = '1lIi![]0Oo@';
@@ -198,7 +198,7 @@
 	};
 
 	displayNewRandomString();
-})();
+});
 
 (() => {
 	const dataKey = 'data-show-accesskey';
