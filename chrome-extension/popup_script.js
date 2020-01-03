@@ -1,31 +1,31 @@
 (() => {
-	"use strict";
+	'use strict';
 
-	const mistakableChars = "1lIi![]0Oo@";
+	const mistakableChars = '1lIi![]0Oo@';
 	const optionSettings = [{
-		type: "exclude-mistakable-char",
+		type: 'exclude-mistakable-char',
 		name: `紛らわしい文字(${mistakableChars})を除外する`,
-		defaultValue: "true",
-		filterChars: str => Array.from(str).filter(char => !mistakableChars.includes(char)).join(""),
+		defaultValue: 'true',
+		filterChars: str => Array.from(str).filter(char => !mistakableChars.includes(char)).join(''),
 	}, {
-		type: "use-mistakable-char-only",
+		type: 'use-mistakable-char-only',
 		name: `紛らわしい文字(${mistakableChars})のみを使う（ジョーク機能）`,
-		defaultValue: "false",
-		filterChars: str => Array.from(str).filter(char => mistakableChars.includes(char)).join(""),
+		defaultValue: 'false',
+		filterChars: str => Array.from(str).filter(char => mistakableChars.includes(char)).join(''),
 	}];
 
 	optionSettings.forEach(optionSetting => {
 		const localStorageKey = `options.${optionSetting.type}.enabled`;
-		const checkBox = document.createElement("check-box");
+		const checkBox = document.createElement('check-box');
 		const defaultValue = optionSetting.defaultValue;
-		checkBox.checked = (localStorage[localStorageKey] || defaultValue) === "true";
+		checkBox.checked = (localStorage[localStorageKey] || defaultValue) === 'true';
 		checkBox.innerText = optionSetting.name;
 
-		const li = document.createElement("li");
+		const li = document.createElement('li');
 		li.append(checkBox);
-		document.getElementById("options").append(li);
+		document.getElementById('options').append(li);
 
-		checkBox.addEventListener("change", () => {
+		checkBox.addEventListener('change', () => {
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
@@ -37,57 +37,57 @@
 	});
 
 	const PasswordCharsSettings = [{
-		type: "number",
-		name: "数字",
-		accesskey: "n",
-		chars: "0123456789"
+		type: 'number',
+		name: '数字',
+		accesskey: 'n',
+		chars: '0123456789',
 	}, {
-		type: "lower-case-alphabet",
-		name: "アルファベット（小文字）",
-		accesskey: "a",
-		chars: "abcdefghijklmnopqrstuvwxyz"
+		type: 'lower-case-alphabet',
+		name: 'アルファベット（小文字）',
+		accesskey: 'a',
+		chars: 'abcdefghijklmnopqrstuvwxyz',
 	}, {
-		type: "upper-case-alphabet",
-		name: "アルファベット（大文字）",
-		accesskey: "u",
-		chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		type: 'upper-case-alphabet',
+		name: 'アルファベット（大文字）',
+		accesskey: 'u',
+		chars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	}, {
-		type: "symbol",
-		name: "記号",
-		accesskey: "s",
+		type: 'symbol',
+		name: '記号',
+		accesskey: 's',
 		individualSelection: true,
-		chars: "!#$%&()@[{;:]+*},./<>?"
+		chars: '!#$%&()@[{;:]+*},./<>?',
 	}];
 
 	PasswordCharsSettings.forEach(setting => {
 		const localStorageKey = `char-type.${setting.type}.enabled`;
-		const checkBox = document.createElement("check-box");
-		checkBox.setAttribute("accesskey", setting.accesskey);
+		const checkBox = document.createElement('check-box');
+		checkBox.setAttribute('accesskey', setting.accesskey);
 		checkBox.title = `ON/OFF ショートカットキー: Alt + ${setting.accesskey}`;
-		checkBox.checked = (localStorage[localStorageKey] || "true") === "true";
+		checkBox.checked = (localStorage[localStorageKey] || 'true') === 'true';
 		checkBox.innerText = setting.name;
 
-		const li = document.createElement("li");
+		const li = document.createElement('li');
 		li.append(checkBox);
-		document.getElementById("settings").append(li);
+		document.getElementById('settings').append(li);
 
-		checkBox.addEventListener("change", () => {
+		checkBox.addEventListener('change', () => {
 			displayNewRandomString();
 			localStorage[localStorageKey] = checkBox.checked;
 		});
 
 		if (setting.individualSelection) {
-			const details = document.createElement("details");
-			details.classList.add("individual-selection");
-			const summary = document.createElement("summary");
-			summary.innerText = "個別設定";
+			const details = document.createElement('details');
+			details.classList.add('individual-selection');
+			const summary = document.createElement('summary');
+			summary.innerText = '個別設定';
 			details.append(summary);
 
 			const chars = Array.from(setting.chars).map(char => {
-				const eachCharCheckBox = document.createElement("check-box");
+				const eachCharCheckBox = document.createElement('check-box');
 				eachCharCheckBox.checked = checkBox.checked;
 				eachCharCheckBox.innerText = char;
-				eachCharCheckBox.addEventListener("change", () => {
+				eachCharCheckBox.addEventListener('change', () => {
 					checkBox.checked = chars.some(({ selected }) => selected);
 					displayNewRandomString();
 				});
@@ -104,7 +104,7 @@
 
 			li.append(details);
 
-			checkBox.addEventListener("change", () => {
+			checkBox.addEventListener('change', () => {
 				chars.forEach(({ setChecked }) => {
 					setChecked(checkBox.checked);
 				});
@@ -113,54 +113,54 @@
 
 			const getSelectedChars = () => {
 				return chars.map(({ selected, char }) => {
-					return selected ? char : "";
-				}).join("");
+					return selected ? char : '';
+				}).join('');
 			};
 
 			setting.getCharsIfSelected = () => {
-				return checkBox.checked ? getSelectedChars() : "";
+				return checkBox.checked ? getSelectedChars() : '';
 			};
 			return;
 		}
 
 		setting.getCharsIfSelected = () => {
-			return checkBox.checked ? setting.chars : "";
+			return checkBox.checked ? setting.chars : '';
 		};
 	});
 
-	const randomStringInput = document.getElementById("random-string");
-	const randomStringLengthInput = document.getElementById("random-string-length");
+	const randomStringInput = document.getElementById('random-string');
+	const randomStringLengthInput = document.getElementById('random-string-length');
 	const getRandomStringLength = () => parseInt(randomStringLengthInput.value);
 
-	randomStringLengthInput.addEventListener("focus", () => {
+	randomStringLengthInput.addEventListener('focus', () => {
 		randomStringLengthInput.select();
 	});
 	const randomStringLengthMemory = {
-		localStorageKey: "random-string-length",
+		localStorageKey: 'random-string-length',
 		save(value) {
 			localStorage[this.localStorageKey] = value;
 		},
 		load(defValue) {
 			return parseInt(localStorage[this.localStorageKey]);
-		}
+		},
 	};
 	randomStringLengthInput.value = randomStringLengthMemory.load() || randomStringLengthInput.value;
-	randomStringLengthInput.addEventListener("change", () => {
+	randomStringLengthInput.addEventListener('change', () => {
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
 	});
-	randomStringLengthInput.addEventListener("keydown", ({key}) => {
-		if (key == "Enter") {
+	randomStringLengthInput.addEventListener('keydown', ({key}) => {
+		if (key == 'Enter') {
 			displayNewRandomString();
 		}
 	});
-	randomStringLengthInput.addEventListener("wheel", ({deltaY}) => {
+	randomStringLengthInput.addEventListener('wheel', ({deltaY}) => {
 		if (deltaY > 0) {
 			// ↓方向
-			randomStringLengthInput.stepDown()
+			randomStringLengthInput.stepDown();
 		} else if (deltaY < 0) {
 			// ↑方向
-			randomStringLengthInput.stepUp()
+			randomStringLengthInput.stepUp();
 		}
 		displayNewRandomString();
 		randomStringLengthMemory.save(randomStringLengthInput.value);
@@ -172,11 +172,11 @@
 		randomStringInput.select();
 	};
 
-	document.getElementById("re-create").addEventListener("click", displayNewRandomString);
+	document.getElementById('re-create').addEventListener('click', displayNewRandomString);
 
 	const createRandomString = (len) => {
 
-		let target = "";
+		let target = '';
 
 		PasswordCharsSettings.forEach(({ getCharsIfSelected }) => {
 			target += getCharsIfSelected();
@@ -186,11 +186,11 @@
 			target = filterCharsIfNeeded(target);
 		});
 
-		if (target === "") return "";
+		if (target === '') return '';
 
 		const target_len = target.length;
 
-		let result = "";
+		let result = '';
 		for (let i = 0; i < len; i++) {
 			result += target[Math.random() * target_len | 0];
 		}
@@ -201,14 +201,14 @@
 })();
 
 (() => {
-	const dataKey = "data-show-accesskey";
-	document.body.addEventListener("keydown", ({key}) => {
-		if (key === "Alt") {
-			document.body.setAttribute(dataKey, "true");
+	const dataKey = 'data-show-accesskey';
+	document.body.addEventListener('keydown', ({key}) => {
+		if (key === 'Alt') {
+			document.body.setAttribute(dataKey, 'true');
 		}
 	});
-	document.body.addEventListener("keyup", ({key}) => {
-		if (key === "Alt") {
+	document.body.addEventListener('keyup', ({key}) => {
+		if (key === 'Alt') {
 			document.body.removeAttribute(dataKey);
 		}
 	});
