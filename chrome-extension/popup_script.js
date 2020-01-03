@@ -140,7 +140,7 @@
 		save(value) {
 			localStorage[this.localStorageKey] = value;
 		},
-		load(defValue) {
+		load() {
 			return parseInt(localStorage[this.localStorageKey]);
 		},
 	};
