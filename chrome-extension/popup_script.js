@@ -1,3 +1,4 @@
+import './web-components/check-box.js';
 (() => {
 	'use strict';
 
